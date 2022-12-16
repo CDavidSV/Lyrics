@@ -1,0 +1,121 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    /* background-color: #0F0F0F; */
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 0%, rgba(224,86,253,1) 100%);
+    font-family: sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+.nonselectable {
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audio-player {
+    background-color: #0F0F0F;
+    position: absolute;
+    height: 90px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 20px;
+    bottom: 0px;
+    min-width: 560px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.progress-done-container { 
+    background-color: rgba(146, 146, 146, 0.644);
+    width: 100%;
+    height: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-done {
+    background-color: rgb(255, 0, 0);
+    width: 100%;
+    height: 5px;
+    transform-origin: top left;
+    transform: scaleX(0);
+}
+
+.progress-slider-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+    gap: 10px;
+}
+
+.playback-progress {
+    width: 40%;
+    max-width: 722px;
+}
+
+.progress-time {
+    min-width: 40px;
+    font-size: 13px;
+    text-align: right;
+}
+
+.progress-duration {
+    min-width: 40px;
+    font-size: 13px;
+    text-align: left;
+}
+
+.progress-done-button {
+    position: absolute;
+    background-color: rgb(255, 0, 0);
+    z-index: 2;
+    height: 12px;
+    width: 12px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateX(-5px);
+    /* transition: 0.1s ease; */
+}
+
+.progress-bar:hover .progress-done-button {
+    opacity: 1; 
+}
+
+.progress-bar:active .progress-done-button {
+    opacity: 1; 
+}
+
+.disabled {
+    opacity: 0.6;
+}
