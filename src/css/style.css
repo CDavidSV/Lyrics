@@ -13,7 +13,7 @@ html, body {
     -moz-user-select: none; 
     -ms-user-select: none; 
     user-select: none;
-}
+} 
 
 .nonselectable {
     -webkit-touch-callout: none; 
@@ -51,7 +51,6 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    cursor: pointer;
 }
 
 .progress-done-container { 
@@ -96,26 +95,71 @@ html, body {
     text-align: left;
 }
 
-.progress-done-button {
+.progress-done-button-container {
     position: absolute;
-    background-color: rgb(255, 0, 0);
     z-index: 2;
     height: 12px;
     width: 12px;
     border-radius: 12px;
-    opacity: 0;
-    transform: translateX(-5px);
-    /* transition: 0.1s ease; */
+    transform: translateX(-6px);
+}
+
+.progress-done-button {
+    background-color: rgb(255, 0, 0);
+    height: 12px;
+    width: 12px;
+    border-radius: 12px;
+    transform: scale(0);
+    transition: 0.1s ease;
+}
+
+.volume-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 150px;
+    height: 5px;
+    background: rgba(146, 146, 146, 0.644);
+    border-radius: 5px;
+    background-image: linear-gradient(#ff0000, #ff0000);
+    background-size: 70% 100%;
+    background-repeat: no-repeat;
+}
+  
+.volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 12px;
+    background: #ff0000;
+    transition: background 0.3s ease;
+}
+  
+.volume-slider::-webkit-slider-runnable-track  {
+    -webkit-appearance: none;
+    background: transparent;
 }
 
 .progress-bar:hover .progress-done-button {
-    opacity: 1; 
+    transform: scale(1);
 }
 
 .progress-bar:active .progress-done-button {
-    opacity: 1; 
+    transform: scale(1);
+}
+
+.progress-bar:hover {
+    cursor: pointer; 
 }
 
 .disabled {
-    opacity: 0.6;
+    opacity: 0.5;
+}
+
+.disabled .progress-done-button{
+    cursor: auto;
+    transform: translateX(-10000px);
+}
+.disabled .progress-bar {
+    cursor: auto;
 }

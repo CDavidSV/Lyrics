@@ -10,21 +10,23 @@
 <body>
     <input type="file" id="song" accept=".mp3" onkeyup="event.preventDefault()"/>
     <audio id="audio"></audio>
-    <div class="audio-player disabled">
+    <div class="audio-player">
         <div class="buttons-container">
-            <button class="playBtn">Play</button>
-            <button class="loopBtn" onkeyup="event.preventDefault()">Loop</button>
-            <button class="backwards" skip="-5" onkeyup="event.preventDefault()">-5</button>
-            <button class="forwards" skip="5" onkeyup="event.preventDefault()">+5</button>
+            <button class="playBtn" disabled="true">Play</button>
+            <button class="loopBtn" disabled="true" onkeyup="event.preventDefault()">Loop</button>
+            <button class="backwards" disabled="true" skip="-5" onkeyup="event.preventDefault()">-5</button>
+            <button class="forwards" disabled="true" skip="5" onkeyup="event.preventDefault()">+5</button>
         </div>
-        <div class="playback-progress">
+        <div class="playback-progress disabled">
             <div class="progress-slider-container">
                 <p class="progress-time">00:00</p>
                 <div class="progress-bar">
                     <div class="progress-done-container">
                         <div class="progress-done"></div>
                     </div>
-                    <div class="progress-done-button"></div>
+                    <div class="progress-done-button-container">
+                        <div class="progress-done-button"></div>
+                    </div>
                 </div>
                 <p class="progress-duration">00:00</p>
             </div>

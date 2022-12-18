@@ -9,10 +9,10 @@ const progressBar = document.querySelector(".progress-done");
 const progressSlider = document.querySelector(".progress-bar");
 const progressTimestamp = document.querySelector(".progress-time");
 const endTimestamp = document.querySelector(".progress-duration");
-const progressBtn = document.querySelector(".progress-done-button");
+const progressBtn = document.querySelector(".progress-done-button-container");
 const forwardBtn = document.querySelector(".forwards");
 const backwardBtn = document.querySelector(".backwards");
-const audioPlayer = document.querySelector(".audio-player");
+const playbackProgress = document.querySelector(".playback-progress");
 
 // Variables.
 let seeking = false;
@@ -21,17 +21,17 @@ let played = false;
 let dragTime = 0;
 
 // Events.
-song.addEventListener("change", handleAudioFile, false);
-playBtn.addEventListener("click", handlePLayBtn, false);
-loopBtn.addEventListener("click", handleLoopBtn, false);
+addEventListener("resize", handleResize);
+song.addEventListener("change", handleAudioFile);
+playBtn.addEventListener("click", handlePLayBtn);
+loopBtn.addEventListener("click", handleLoopBtn);
 progressSlider.addEventListener("mousedown", (event) => {seeking = true; seek(event)}, false);
-document.addEventListener("mousemove", seek, false);
+document.addEventListener("mousemove", seek);
 document.addEventListener("mouseup", () => { changeProgress(); seeking = false; }, false);
-volumeSlider.addEventListener("input", handleVolume, false);
-forwardBtn.addEventListener("click", handleSkips, false);
-backwardBtn.addEventListener("click", handleSkips, false);
-document.addEventListener('keydown', handleKeyboard, false);
-progressSlider.addEventListener('mouseover', handleMouseover, false);
+volumeSlider.addEventListener("input", handleVolume);
+forwardBtn.addEventListener("click", handleSkips);
+backwardBtn.addEventListener("click", handleSkips);
+document.addEventListener('keydown', handleKeyboard);
 
 // Functions.
 function handleAudioFile() {
@@ -46,7 +46,12 @@ function handleAudioFile() {
     progressBar.value = 0;
     endTimestamp.textContent = `${convertTime(Math.floor(player.duration))}`;
 
-    audioPlayer.classList.remove("disabled");
+    playbackProgress.classList.remove("disabled");
+    playbackProgress.disabled = false;
+    playBtn.disabled = false;
+    loopBtn.disabled = false;
+    forwardBtn.disabled = false;
+    backwardBtn.disabled = false;
     volumeSlider.disabled = false;
    }, 100);
 }
@@ -56,19 +61,10 @@ function handlePLayBtn() {
 
     if (player.paused) {
         player.play();
-
-        playingInterval = setInterval(() => {
-            if(!seeking) {
-                progressTimestamp.textContent = `${convertTime(Math.floor(player.currentTime))}`;
-                progressBar.style = `transform: scaleX(${(player.currentTime / player.duration)});`;
-                progressBtn.style = `transform: translateX(${(player.currentTime / player.duration) * progressBar.offsetWidth - 5}px);`;
-            }
-        }, 10);
+        requestAnimationFrame(updateProgress);
         return;
     }
     player.pause();
-
-    clearInterval(playingInterval, 'pause');
 }
 
 function handleLoopBtn() {
@@ -84,10 +80,23 @@ function handleLoopBtn() {
 function handleVolume() {
     if(!player.src) return;
 
+    volumeSlider.style.backgroundSize = `${this.value * 100 / this.max}%` ;
+
     newVol = this.value / 1000;
     globalVolume = newVol;
     player.volume = newVol;
 } 
+
+function updateProgress() {
+    if(seeking) return;
+    progressTimestamp.textContent = `${convertTime(Math.floor(player.currentTime))}`;
+    progressBar.style = `transform: scaleX(${(player.currentTime / player.duration)});`;
+    progressBtn.style = `transform: translateX(${(player.currentTime / player.duration) * progressBar.offsetWidth - 6}px);`;
+
+    if(!player.paused) {
+        requestAnimationFrame(updateProgress);
+    }
+}
 
 function seek(e) {
     if(!player.src) return;
@@ -97,12 +106,12 @@ function seek(e) {
     const seekTime = ((e.clientX - leftOffset) / progressBar.offsetWidth) * player.duration;
     if (seekTime >= 0 && seekTime <= player.duration) {  
         progressBar.style = `transform: scaleX(${(e.clientX - leftOffset) / progressBar.offsetWidth});`;
-        progressBtn.style = `transform: translateX(${e.clientX - leftOffset - 5}px);`;
+        progressBtn.style = `transform: translateX(${e.clientX - leftOffset - 6}px);`;
         progressTimestamp.textContent = `${convertTime(((e.clientX - leftOffset) / progressBar.offsetWidth) * player.duration) }`;
         dragTime = seekTime;
     } else if (seekTime >= player.duration) {
         progressBar.style = `transform: scaleX(1);`;
-        progressBtn.style = `transform: translateX(${progressBar.offsetWidth - 5}px);`;
+        progressBtn.style = `transform: translateX(${progressBar.offsetWidth - 6}px);`;
         progressTimestamp.textContent = `${convertTime(player.duration) }`;
         dragTime = player.duration;
     } else if (seekTime <= 0) {
@@ -119,6 +128,7 @@ function changeProgress() {
     if(!seeking) return;
     player.currentTime = dragTime;
     dragTime = 0;
+    requestAnimationFrame(updateProgress);
 }
 
 function convertTime(timestamp) {
@@ -170,12 +180,14 @@ function handleKeyboard(e) {
     }
 }
 
-function handleMouseover() {
-    if (seeking) {
-
+function handleResize() {
+    if(player.paused && !seeking) {
+        progressTimestamp.textContent = `${convertTime(Math.floor(player.currentTime))}`;
+        progressBar.style = `transform: scaleX(${(player.currentTime / player.duration)});`;
+        progressBtn.style = `transform: translateX(${(player.currentTime / player.duration) * progressBar.offsetWidth - 6}px);`;
     }
 }
 
-function playing() {
-
+function changeTheme() {
+    
 }
